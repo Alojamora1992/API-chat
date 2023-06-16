@@ -1,7 +1,12 @@
-const store = require('../repositories/users-repository')
+const {
+    addUserDB,
+    getUsersDB,
+    updateUserDB,
+    deleteUserDB
+} = require('../repositories/users-repository')
 
 //add user
-const addUser = (data) => {
+const addUser = async (data) => {
     if (!data) {
         return Promise.reject('Invalid user');
     }
@@ -11,17 +16,42 @@ const addUser = (data) => {
         password: data.password,
         status: data.status,
     }
-    return store.add(user);
+    return await addUserDB(user);
 }
 
 //get all users
-const getUsers = () => {
-    return new Promise((resolve, reject) => {
-        resolve(store.list());
-    })
-}
+const getUsers = async () => {
+    try {
+        const users = await getUsersDB();
+        return users;
+    } catch (error) {
+        throw error;
+    }
+};
+
+//update user
+const updateUser = async (userId, userData) => {
+    try {
+        const user = await updateUserDB(userId, userData);
+        return user;
+    } catch (error) {
+        throw error;
+    }
+};
+
+//delete user
+const deleteUser = async (id) => {
+    try {
+        const user = await deleteUserDB(id);
+        return user;
+    } catch (error) {
+        throw error;
+    }
+};
 
 module.exports ={
     addUser,
-    getUsers
+    getUsers,
+    updateUser,
+    deleteUser
 }

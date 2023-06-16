@@ -1,25 +1,25 @@
-const Model = require('../models/messages-model')
+const ModelMessage = require('../models/messages-model')
 
 //POST
-const addMessage = (message) => {
-    const myMessage = new Model(message);
-    myMessage.save();
+const addMessageDB = (message) => {
+    const newMessage = new ModelMessage(message);
+    newMessage.save();
 }
 //GET
-const getMessages = async (filterUserMessages) => {
+const getMessagesDB = async (filterUserMessages) => {
     
     let filter = {};
     if (filterUserMessages !== null){
         filter = {user: filterUserMessages};
     }
-    const messages = await Model.find(filter)
+    const messages = await ModelMessage.find(filter)
     .populate('user','-__v');
     return messages;
 }
 //PATCH
-const updateText = async (id, message) => {
+const updateMessageDB = async (id, message) => {
     
-    const foundMessage = await Model.findByIdAndUpdate(
+    const foundMessage = await ModelMessage.findByIdAndUpdate(
         {_id: id},
         {message},
         {new: true}
@@ -27,17 +27,16 @@ const updateText = async (id, message) => {
     return foundMessage;
 }
 //DELETE
-const removeMessage = async (id) => {
-    const foundMessage = await Model.deleteOne({
+const removeMessageDB = async (id) => {
+    const foundMessage = await ModelMessage.deleteOne({
         _id: id
     });
     return foundMessage;
 }  
 
 module.exports = {
-    add: addMessage,
-    list: getMessages,
-    updateText: updateText, 
-    remove: removeMessage,
-    
+    addMessageDB,
+    getMessagesDB,
+    updateMessageDB, 
+    removeMessageDB,
 }

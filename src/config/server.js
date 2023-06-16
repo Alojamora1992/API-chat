@@ -12,8 +12,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-//le pasamos el servidor a las rutas
-router(app);
+//rutas
+app.use('/api/v1', router) //localhost:3000/api/v1
 
 //puesta en marcha del servidor
 app.listen(3000, () => {

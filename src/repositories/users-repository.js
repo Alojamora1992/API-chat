@@ -1,18 +1,50 @@
-const Model = require('../models/users-model');
+const ModelUser = require('../models/users-model');
 
-//POST
-const addUser = (message) => {
-    const myUser = new Model(message);
-    return myUser.save();
-}
+const addUserDB = async (user) => {
+    try {
+        const newUser = new ModelUser(user);
+        return await newUser.save();
+    } catch (error) {
+        throw new Error('Error al guardar el usuario en la base de datos.');
+    }
+};
 
-//GET
-const getUsers = async () => {
-    const users = await Model.find();
-    return users;
-}
+const getUsersDB = async () => {
+    try {
+        const users = await ModelUser.find();
+        return users;
+    } catch (error) {
+        throw new Error('Error al obtener los usuarios de la base de datos.');
+    }
+};
+
+const updateUserDB = async (id, dataUser) => {
+    try {
+        const user = await ModelUser.findByIdAndUpdate(id, dataUser, { new: true });
+        if (!user) {
+            throw new Error('El usuario no existe en la base de datos.');
+        }
+        return user;
+    } catch (error) {
+        throw new Error('Error al actualizar el usuario en la base de datos.');
+    }
+};
+
+const deleteUserDB = async (userId) => {
+    try {
+        const user = await ModelUser.findByIdAndDelete(userId);
+        if (!user) {
+            throw new Error('El usuario no existe en la base de datos.');
+        }
+        return user;
+    } catch (error) {
+        throw new Error('Error al eliminar el usuario de la base de datos.');
+    }
+};
 
 module.exports = {
-   add: addUser,
-   list: getUsers
-}
+    addUserDB,
+    getUsersDB,
+    updateUserDB,
+    deleteUserDB
+};

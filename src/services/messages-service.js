@@ -1,58 +1,69 @@
-const store = require('../repositories/messages-repository');
+const {
+    addMessageDB,
+    getMessagesDB,
+    updateMessageDB, 
+    removeMessageDB
+} = require('../repositories/messages-repository');
+
 
 // add Messages
-const addMessage = (user, message) => {
-    return new Promise((resolve, reject) => {
-        if (!user || !message){
-            console.error('[messageController] No hay usuario o mensaje');
-            reject('Los datos son incorrectos');
-            return false;
+const addMessage = async (user, message) => {
+    try {
+        if(!user || !message){
+            throw new Error('Invalid data');
         }
         const fullMessage = {
             user: user,
             message: message,
             date: new Date(),
-        };
-        store.add(fullMessage);
-        resolve(fullMessage);
-    });
+        }
+        const result = await addMessageDB(fullMessage);
+        return result;
+    }
+    catch (error) {
+        console.error('[messageService] Error:', error);
+        throw new Error('Internal server error.');
+    }
+    
 }
 //get Messages
-const getMessages = (filterUserMessages) => {
-    return new Promise ((resolve, reject) => {
-        resolve(store.list(filterUserMessages));
-    })
+const getMessages = async (filterUserMessages) => {
+    try {
+        const result = await getMessagesDB(filterUserMessages);
+        return result;
+    } catch (error) {
+        console.error('[messageService] Error:', error);
+        throw new Error('Internal server error.');
+    }  
 }
 
 //update Messages
-const updateMessage = (id, message) => {
-    return new Promise(async (resolve, reject) => {
+const updateMessage = async (id, message) => {
+    try{
         if (!id || !message){
-            reject('Invalid data');
-            return false;
+            throw new Error('Invalid data');
         }
-        const result = await store.updateText(id, message);
-        resolve(result);
-    })
+        const result = await updateMessageDB(id, message);
+        return result;
+    } catch (error) {
+        console.error('[messageService] Error:', error);
+        throw new Error('Internal server error.');
+    }
 }
 
 //delete Messages
-const deleteMessage = (id) => {
-    return new Promise((resolve, reject) => {
+const deleteMessage = async (id) => {
+    try{
         if (!id){
-            reject('Id invalido');
-            return false;
+            throw new Error('Invalid data');
         }
-        store.remove(id)
-        .then(() => {
-            resolve();
-        })
-        .catch((error) => {
-            reject(error);
-        })
-    })
+        const result = await removeMessageDB(id);
+        return result;
+    } catch (error) {
+        console.error('[messageService] Error:', error);
+        throw new Error('Internal server error.');
+    }
 }
-
 
 module.exports = {
     addMessage,
