@@ -9,10 +9,16 @@ const addUserDB = async (user) => {
     }
 };
 
-const getUsersDB = async () => {
+const getUsersDB = async (dataQueryDB) => {
     try {
-        const users = await ModelUser.find();
-        return users;
+        const { filter, skip, limit, sort, projection, population } = dataQueryDB;
+        return await ModelUser.find(filter)
+        .skip(skip)
+        .limit(limit)
+        .sort(sort)
+        .select(projection)
+        .populate(population);
+        
     } catch (error) {
         throw new Error('Error al obtener los usuarios de la base de datos.');
     }

@@ -17,8 +17,8 @@ const addMessage = async (user, message) => {
             message: message,
             date: new Date(),
         }
-        const result = await addMessageDB(fullMessage);
-        return result;
+        const addedMessage  = await addMessageDB(fullMessage);
+        return addedMessage ;
     }
     catch (error) {
         console.error('[messageService] Error:', error);
@@ -27,10 +27,10 @@ const addMessage = async (user, message) => {
     
 }
 //get Messages
-const getMessages = async (filterUserMessages) => {
+const getMessages = async (queryUserMessages) => {
     try {
-        const result = await getMessagesDB(filterUserMessages);
-        return result;
+        const messages = await getMessagesDB(queryUserMessages);
+        return messages;
     } catch (error) {
         console.error('[messageService] Error:', error);
         throw new Error('Internal server error.');
@@ -43,8 +43,8 @@ const updateMessage = async (id, message) => {
         if (!id || !message){
             throw new Error('Invalid data');
         }
-        const result = await updateMessageDB(id, message);
-        return result;
+        const updateMessage = await updateMessageDB(id, message);
+        return updateMessage;
     } catch (error) {
         console.error('[messageService] Error:', error);
         throw new Error('Internal server error.');
@@ -57,8 +57,8 @@ const deleteMessage = async (id) => {
         if (!id){
             throw new Error('Invalid data');
         }
-        const result = await removeMessageDB(id);
-        return result;
+        const removeMessage = await removeMessageDB(id);
+        return removeMessage;
     } catch (error) {
         console.error('[messageService] Error:', error);
         throw new Error('Internal server error.');
