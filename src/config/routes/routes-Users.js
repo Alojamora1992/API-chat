@@ -11,7 +11,7 @@ const {
 //rutas de usuarios
 router.post('/users', createUsers);
 router.get('/users', getUsers);
-router.patch('/users', updateUser);
+router.put('/users', updateUser);
 router.delete('/users', deleteUser);
 
 module.exports = router;

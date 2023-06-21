@@ -19,12 +19,6 @@ const getMessagesDB = async (queryUserMessages) => {
         .sort(sort)
         .select(projection)
         .populate(population); 
-        //Si se danacambiar el archivo del controlador que fue el unico que se modifico.
-        // let filter = {};
-        // if (filterUserMessages !== null) {
-        //     filter = { user: filterUserMessages };
-        // }
-        // const messages = await ModelMessage.find(filter).populate('user', '-__v');
     } catch (error) {
         throw new Error('Error al obtener los mensajes de la base de datos.');
     }

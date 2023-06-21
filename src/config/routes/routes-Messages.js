@@ -11,7 +11,7 @@ const {
 //rutas de mensajes
 router.get('/messages', getMessages);
 router.post('/messages', createMessage);
-router.patch('/messages', updateMessage);
+router.put('/messages', updateMessage);
 router.delete('/messages', deleteMessage);
 
 module.exports = router;
