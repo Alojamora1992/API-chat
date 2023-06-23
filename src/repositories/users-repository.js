@@ -48,9 +48,19 @@ const deleteUserDB = async (userId) => {
     }
 };
 
+const getUserByEmailDB = async (email) => {
+    try {
+        const user = await ModelUser.findOne({ email });
+        return user;
+    } catch (error) {
+        throw new Error('Error al obtener el usuario por correo electrónico desde la base de datos.');
+    }
+};
+
 module.exports = {
     addUserDB,
     getUsersDB,
     updateUserDB,
-    deleteUserDB
+    deleteUserDB,
+    getUserByEmailDB
 };

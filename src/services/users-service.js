@@ -1,9 +1,11 @@
 const Joi = require('joi');
+const bcrypt = require('bcrypt');
 const {
     addUserDB,
     getUsersDB,
     updateUserDB,
-    deleteUserDB
+    deleteUserDB,
+    getUserByEmailDB
 } = require('../repositories/users-repository');
 
 // Esquema de validación con Joi
@@ -27,7 +29,7 @@ const addUser = async (data) => {
         const user = {
             name: value.name,
             email: value.email,
-            password: value.password,
+            password: await bcrypt.hash(value.password, 10),
             status: value.status
         };
 
@@ -67,9 +69,20 @@ const deleteUser = async (id) => {
     }
 };
 
+//get user by email
+const getUserByEmail = async (email) => {
+    try {
+        const user = await getUserByEmailDB(email);
+        return user;
+    } catch (error) {
+        throw new Error('Failed to retrieve user by email from the database.');
+    }
+};
+
 module.exports ={
     addUser,
     getUsers,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUserByEmail
 }
