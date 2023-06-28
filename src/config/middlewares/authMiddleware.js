@@ -1,7 +1,6 @@
 // authMiddleware.js
 const jwt = require('jsonwebtoken');
 
-
 const authMiddleware = (req, res, next) => {
     // Obtener el token del encabezado de la solicitud
     const token = req.header('Authorization');
@@ -15,9 +14,11 @@ const authMiddleware = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
         // Adjuntar el usuario decodificado a la solicitud
-        req.user = decoded.user;
-        
-        // Continuar con el siguiente middleware o controlador
+        req.user = decoded
+        console.log(decoded)
+        if(req.query.id != req.user.id) {
+            return res.status(403).json({ message: 'Unauthorized' });
+        }
         next();
     } catch (error) {
         return res.status(401).json({ message: 'Invalid token' });

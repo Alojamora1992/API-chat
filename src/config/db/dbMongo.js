@@ -9,7 +9,7 @@ async function connect(url) {
         await db.connect(url, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            dbName: 'Kutai-Chat',
+            dbName: 'Marvel-Api',
         });
         console.log('[db] conectada con exito');
     }catch(error){

@@ -41,7 +41,6 @@ const ModelMarvelCharacters = require('../models/marvelCharacters-model');
     }
   };
 
-
   const deleteCharacterDB = async (characterId) => {
       try {
         const characterDeleted = await ModelMarvelCharacters.findByIdAndDelete(characterId);  

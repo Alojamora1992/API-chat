@@ -12,6 +12,7 @@ const addUserDB = async (user) => {
 const getUsersDB = async (dataQueryDB) => {
     try {
         const { filter, skip, limit, sort, projection, population } = dataQueryDB;
+        console.log(filter, skip, limit, sort, projection, population);
         return await ModelUser.find(filter)
         .skip(skip)
         .limit(limit)
@@ -38,7 +39,8 @@ const updateUserDB = async (id, dataUser) => {
 
 const deleteUserDB = async (userId) => {
     try {
-        const user = await ModelUser.findByIdAndDelete(userId);
+        //const user = await ModelUser.findByIdAndDelete(userId);
+        const user = await ModelUser.deleteOne({"user": userId});
         if (!user) {
             throw new Error('El usuario no existe en la base de datos.');
         }

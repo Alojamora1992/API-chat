@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const {
     addUserDB,
@@ -29,7 +30,7 @@ const addUser = async (data) => {
         const user = {
             name: value.name,
             email: value.email,
-            password: await bcrypt.hash(value.password, 10),
+            password: await bcrypt.hash(value.password, 5),
             status: value.status
         };
 
@@ -52,6 +53,9 @@ const getUsers = async (dataQueryDB) => {
 //update user
 const updateUser = async (userId, userData) => {
     try {
+        if (userData.password) {
+            userData.password = await bcrypt.hash(userData.password, 5);
+        }
         const user = await updateUserDB(userId, userData);
         return user;
     } catch (error) {
@@ -70,12 +74,31 @@ const deleteUser = async (id) => {
 };
 
 //get user by email
-const getUserByEmail = async (email) => {
+const generateToken = async (dataUser) => {
+    const {_id, email, password} = dataUser;
+    const payload = { id: _id, email, password };
+    const token = jwt.sign( payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return token;
+};
+
+const userExist = async (email, password) => {
     try {
         const user = await getUserByEmailDB(email);
-        return user;
-    } catch (error) {
-        throw new Error('Failed to retrieve user by email from the database.');
+        // Comprueba si el usuario existe en la base de datos
+        if (!user) {
+            throw new Error('Invalid credentials email');
+        }
+        // Compara la contraseña ingresada con la contraseña almacenada
+        const isPasswordValid = await bcrypt.compare(password,user.password);
+        
+        if (!isPasswordValid) {
+            throw new Error('Invalid credentials password');
+        }
+        // Genera un token de autenticación con el ID del usuario como carga útil
+        const token = await generateToken(user);
+        return token;
+    } catch (err) {
+        throw new Error(err.message);
     }
 };
 
@@ -84,5 +107,5 @@ module.exports ={
     getUsers,
     updateUser,
     deleteUser,
-    getUserByEmail
+    userExist
 }

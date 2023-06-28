@@ -7,7 +7,7 @@ require('dotenv').config()
 
 //Despues de instanciar todo es lo 1ro que se hace, el enrutador.
 const routerUsers = require('./routes/routes-Users')
-const routerMessages = require('./routes/routes-Messages')
+const routerMessages = require('./routes/routes-Favorites')
 const routerMarvelCharacters = require('./routes/routes-MarvelCharacters')
 
 //conexion a la base de datos

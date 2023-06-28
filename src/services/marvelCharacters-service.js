@@ -16,7 +16,9 @@ const fetchMarvelCharacters = async () => {
       const characters = results.map(character => ({
         id: character.id,
         name: character.name,
-        description: character.description
+        description: character.description,
+        modified: character.modified,
+        //comics: character.comics,
       }));
       return characters;
     } catch (error) {
@@ -37,7 +39,6 @@ const addCharacters = async () => {
         console.log('[MarvelService]:Error saving characters...', error);
     }
 };
-
 
 //obtener characters
 const getCharacters = async (queryCharacter) => {

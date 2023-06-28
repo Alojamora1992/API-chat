@@ -17,7 +17,12 @@ const mySchema = new Schema({
     {
         type: String,
         default: "No description available",
-    }
+    },
+    modified:
+    {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 const ModelMarvelCharacters = mongoose.model('MarvelCharacters', mySchema);
